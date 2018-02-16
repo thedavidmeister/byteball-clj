@@ -4,6 +4,7 @@
   network.spec
   manifold.stream
   network.data
+  cheshire.core
   [clojure.spec.alpha :as spec]))
 
 (defn -conn
@@ -16,10 +17,13 @@
 (defn send-message!
  [conn type content]
  {:pre [(spec/valid? :message/type type)]}
- (prn [(name type) content])
+ (prn
+  (cheshire.core/generate-string
+   [(name type) content]))
  (manifold.stream/put!
   @conn
-  [(name type) content]))
+  (cheshire.core/generate-string
+   [(name type) content])))
 
 ; https://github.com/byteball/byteballcore/blob/master/network.js#L100
 (defn just-sayin!
