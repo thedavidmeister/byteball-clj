@@ -9,6 +9,7 @@
   serialize.source-string
   secp256k1.core
   pandect.utils.convert
+  buddy.core.codecs.base64
   secp256k1.formatting.base-convert
   [clojure.spec.alpha :as spec]
   [clojure.test :refer [deftest is]])
@@ -53,15 +54,15 @@
 
 (defn challenge-message->signature
  [message private-key]
- (let [private-bytes (pandect.utils.convert/hex->bytes private-key)
-       hash-bytes (pandect.utils.convert/hex->bytes
+ (let [private-bytes (buddy.core.codecs/hex->bytes private-key)
+       hash-bytes (buddy.core.codecs/hex->bytes
                    (challenge-message->hash message))]
   (assert (. org.bitcoin.NativeSecp256k1 secKeyVerify private-bytes))
-  (secp256k1.formatting.base-convert/byte-array-to-base
+
+  (.encodeToString (java.util.Base64/getEncoder)
    (. org.bitcoin.NativeSecp256k1 sign
     hash-bytes
-    private-bytes)
-   :base64)))
+    private-bytes))))
 
 (defn challenge->login-creds
  [challenge private-key public-key]
