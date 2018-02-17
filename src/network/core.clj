@@ -8,8 +8,6 @@
   pandect.algo.sha256
   serialize.source-string
   secp256k1.core
-  pandect.utils.convert
-  buddy.core.codecs.base64
   secp256k1.formatting.base-convert
   [clojure.spec.alpha :as spec]
   [clojure.test :refer [deftest is]])
@@ -61,33 +59,23 @@
 
 (defn challenge-message->signature
  [message private-key]
- (let [private-bytes (from-hex private-key) ; (buddy.core.codecs/hex->bytes private-key)
-       hash-bytes (buddy.core.codecs/hex->bytes
-                   (challenge-message->hash message))]
-  (assert (. org.bitcoin.NativeSecp256k1 secKeyVerify private-bytes))
-  (javax.xml.bind.DatatypeConverter/printBase64Binary
-   (. org.bitcoin.NativeSecp256k1 sign
-    hash-bytes
-    private-bytes))
-  (secp256k1.core/sign-hash
-   private-key
-   (challenge-message->hash message)
-   :private-key-format :hex
-   :input-format :hex
-   :output-format :base64)))
+ (let [signed-der
+       (secp256k1.core/sign-hash
+        private-key
+        (challenge-message->hash message)
+        :private-key-format :hex
+        :input-format :hex
+        :output-format :hex)
+       signed
+       (secp256k1.formatting.der-encoding/DER-decode-ECDSA-signature signed-der)
+       signed-hex (str (:R signed) (:S signed))]
+  (secp256k1.formatting.base-convert/base-to-base signed-hex :hex :base64)))
 
 (defn challenge->login-creds
  [challenge private-key public-key]
  (let [message {:challenge challenge
                 :pubkey public-key}
-       ; signature (secp256k1.core/sign-hash
-       ;            private-key
-       ;            (challenge-message->hash message)
-       ;            :private-key-format :hex
-       ;            :input-format :hex
-       ;            :output-format :base64)]
        signature (challenge-message->signature message private-key)]
-
   (merge
    message
    {:signature signature})))
@@ -129,7 +117,3 @@
    (merge
     ??message
     {:signature ??sig}))))
-
-; (deftest ??sig-round-trip)
-; (is
-;  ())
