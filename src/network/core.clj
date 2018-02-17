@@ -52,17 +52,29 @@
  (pandect.algo.sha256/sha256
   (serialize.source-string/->source-string message)))
 
+(defn valid-signature?
+ [hash sig public-key]
+ (. org.bitcoin.NativeSecp256k1 verify
+  hash
+  sig
+  public-key))
+
 (defn challenge-message->signature
  [message private-key]
- (let [private-bytes (buddy.core.codecs/hex->bytes private-key)
+ (let [private-bytes (from-hex private-key) ; (buddy.core.codecs/hex->bytes private-key)
        hash-bytes (buddy.core.codecs/hex->bytes
                    (challenge-message->hash message))]
   (assert (. org.bitcoin.NativeSecp256k1 secKeyVerify private-bytes))
-
-  (.encodeToString (java.util.Base64/getEncoder)
+  (javax.xml.bind.DatatypeConverter/printBase64Binary
    (. org.bitcoin.NativeSecp256k1 sign
     hash-bytes
-    private-bytes))))
+    private-bytes))
+  (secp256k1.core/sign-hash
+   private-key
+   (challenge-message->hash message)
+   :private-key-format :hex
+   :input-format :hex
+   :output-format :base64)))
 
 (defn challenge->login-creds
  [challenge private-key public-key]
@@ -93,25 +105,31 @@
 (def ??challenge "bUSwwUmABqPGAyRteUPKdaaq/wDM5Rqr+UL3sO/a")
 (def ??priv "18d8bc95d3b4ae8e7dd5aaa77158f72d7ec4e8556a11e69b20a87ee7d6ac70b4")
 (def ??pub "AqUMbbXfZg6uw506M9lbiJU/f74X5BhKdovkMPkspfNo")
+(def ??message {:challenge ??challenge :pubkey ??pub})
+(def ??sig "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA==")
 
 (deftest ??challenge-message->hash
  (is
   (=
    "1ac78e688e34a4e70a2e9ccde66ed015fb7d16203691834f702b1f76e53baaa8"
-   (challenge-message->hash {:challenge ??challenge :pubkey ??pub}))))
+   (challenge-message->hash ??message))))
 
 (deftest ??challenge-message->signature
  (is
   (=
    "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA=="
    (challenge-message->signature
-    {:challenge ??challenge :pubkey ??pub}
+    ??message
     ??priv))))
 
 (deftest ??challenge->login-creds
  (is
   (=
    (challenge->login-creds ??challenge ??priv ??pub)
-   {:challenge "bUSwwUmABqPGAyRteUPKdaaq/wDM5Rqr+UL3sO/a"
-    :pubkey "AqUMbbXfZg6uw506M9lbiJU/f74X5BhKdovkMPkspfNo"
-    :signature "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA=="})))
+   (merge
+    ??message
+    {:signature ??sig}))))
+
+; (deftest ??sig-round-trip)
+; (is
+;  ())
