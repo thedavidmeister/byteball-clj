@@ -15,7 +15,8 @@
    [org.bitcoinj/bitcoinj-core "0.14.5" :scope "compile"]
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]
-   [buddy/buddy-core "1.4.0"]]
+   [buddy/buddy-core "1.4.0"]
+   [org.clojure/core.async "0.4.474"]]
  :repositories
  #(conj % '["jitpack" "https://jitpack.io"])
  :native-path "native")

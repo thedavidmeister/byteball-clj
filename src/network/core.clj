@@ -10,13 +10,22 @@
   secp256k1.core
   secp256k1.formatting.base-convert
   [clojure.spec.alpha :as spec]
+  clojure.core.async
   [clojure.test :refer [deftest is]])
  (:import org.bitcoin.NativeSecp256k1))
+
+(def responses (atom []))
 
 (defn -conn
  ([] (-conn network.data/hub-url))
  ([url]
-  (aleph.http/websocket-client url)))
+  (let [c @(aleph.http/websocket-client url)]
+        ; chan (clojure.core.async/chan)]
+   ; (manifold.stream/consume prn c)
+   ; (manifold.stream/connect c chan)
+   ; (clojure.core.async/go
+   ;  (swap! responses conj (clojure.core.async/<! chan)))
+   c)))
 (def conn (memoize -conn))
 
 (defn -ks
@@ -35,7 +44,7 @@
  [conn type content]
  {:pre [(spec/valid? :message/type type)]}
  (manifold.stream/put!
-  @conn
+  conn
   (cheshire.core/generate-string
    [(name type) content])))
 
