@@ -17,6 +17,13 @@
  java.lang.Long
  (->source-string [this] (source-seq->source-string ["n" this]))
 
+ java.lang.Double
+ (->source-string [this]
+  ; emulate JS float handling - 1.0 => "1"
+  (if (== (int this) this)
+   (->source-string (int this))
+   (source-seq->source-string ["n" this])))
+
  java.lang.Boolean
  (->source-string [this] (source-seq->source-string ["b" this]))
 
@@ -27,7 +34,7 @@
    "Empty array when generating source-string")
   (str
    "["
-   (clojure.string/join string-join-char (map ->source-string this))
+   (source-seq->source-string (map ->source-string this))
    "]"))
 
  clojure.lang.PersistentArrayMap
@@ -63,3 +70,17 @@
   (=
    (source-seq->source-string ["b" false])
    (->source-string false))))
+
+(deftest ??vector
+ (let [ts ["s" "n" "s" "s" "n" "b"]
+       vs ["a" 81 "b" "c" 3.6903690369 true]]
+  (is
+   (=
+    (str
+     "["
+     (source-seq->source-string
+      (map
+       (fn [t v] (source-seq->source-string [t v]))
+       ts vs))
+     "]")
+    (->source-string vs)))))
