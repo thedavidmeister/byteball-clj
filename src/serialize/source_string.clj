@@ -32,10 +32,11 @@
   (assert
    (pos-int? (count this))
    "Empty array when generating source-string")
-  (str
-   "["
-   (source-seq->source-string (map ->source-string this))
-   "]"))
+  (source-seq->source-string
+   [
+    "["
+    (source-seq->source-string (map ->source-string this))
+    "]"]))
 
  clojure.lang.PersistentArrayMap
  (->source-string [this]
@@ -52,35 +53,45 @@
 
 ; mirroring byteballcore fns
 (deftest ??simple-string
- (is
-  (=
-   (source-seq->source-string ["s" "simple test string"])
-   (->source-string "simple test string")))
+ (let [v "simple test string"]
+  (is
+   (=
+    (source-seq->source-string ["s" v])
+    (->source-string v)))
 
- (is (= 20 (count (->source-string "simple test string")))))
+  (is (= 20 (count (->source-string v))))))
 
 (deftest ??integer
- (is
-  (=
-   (source-seq->source-string ["n" 27090])
-   (->source-string 27090))))
+ (let [v 27090]
+  (is
+   (=
+    (source-seq->source-string ["n" v])
+    (->source-string v)))
+
+  (is (= 7 (count (->source-string v))))))
 
 (deftest ??boolean
- (is
-  (=
-   (source-seq->source-string ["b" false])
-   (->source-string false))))
+ (let [v false]
+  (is
+   (=
+    (source-seq->source-string ["b" v])
+    (->source-string v)))
+
+  (is (= 7 (count (->source-string v))))))
 
 (deftest ??vector
  (let [ts ["s" "n" "s" "s" "n" "b"]
        vs ["a" 81 "b" "c" 3.6903690369 true]]
   (is
    (=
-    (str
-     "["
-     (source-seq->source-string
-      (map
-       (fn [t v] (source-seq->source-string [t v]))
-       ts vs))
-     "]")
-    (->source-string vs)))))
+    (source-seq->source-string
+     [
+      "["
+      (source-seq->source-string
+       (map
+        (fn [t v] (source-seq->source-string [t v]))
+        ts vs))
+      "]"])
+    (->source-string vs)))
+
+  (is (= 42 (count (->source-string vs))))))
