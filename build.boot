@@ -12,6 +12,7 @@
    [samestep/boot-refresh "0.1.0"]
    [pandect "0.6.1"]
    [byte-transforms "0.1.4"]
+   [org.bitcoinj/bitcoinj-core "0.14.5" :scope "compile"]
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]]
  :repositories

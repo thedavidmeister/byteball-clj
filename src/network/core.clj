@@ -8,8 +8,10 @@
   pandect.algo.sha256
   serialize.source-string
   secp256k1.core
+  pandect.utils.convert
   [clojure.spec.alpha :as spec]
-  [clojure.test :refer [deftest is]]))
+  [clojure.test :refer [deftest is]])
+ (:import org.bitcoin.NativeSecp256k1))
 
 (defn -conn
  ([] (-conn network.data/hub-url))
@@ -48,16 +50,25 @@
  (pandect.algo.sha256/sha256
   (serialize.source-string/->source-string message)))
 
+(defn challenge-message->signature
+ [message private-key]
+ (. org.bitcoin.NativeSecp256k1 sign
+  (pandect.utils.convert/hex->bytes
+   (challenge-message->hash message))
+  (pandect.utils.convert/hex->bytes private-key)))
+
 (defn challenge->login-creds
  [challenge private-key public-key]
  (let [message {:challenge challenge
                 :pubkey public-key}
-       signature (secp256k1.core/sign-hash
-                  private-key
-                  (challenge-message->hash message)
-                  :private-key-format :hex
-                  :input-format :hex
-                  :output-format :base64)]
+       ; signature (secp256k1.core/sign-hash
+       ;            private-key
+       ;            (challenge-message->hash message)
+       ;            :private-key-format :hex
+       ;            :input-format :hex
+       ;            :output-format :base64)]
+       signature (challenge-message->signature message private-key)]
+
   (merge
    message
    {:signature signature})))
@@ -81,6 +92,12 @@
   (=
    "1ac78e688e34a4e70a2e9ccde66ed015fb7d16203691834f702b1f76e53baaa8"
    (challenge-message->hash {:challenge ??challenge :pubkey ??pub}))))
+
+(deftest ??challenge-message->signature
+ (is
+  (=
+   "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA=="
+   (challenge-message->signature {:challenge ??challenge :pubkey ??pub}))))
 
 (deftest ??challenge->login-creds
  (is
