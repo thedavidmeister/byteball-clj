@@ -44,7 +44,7 @@
    (into (sorted-map))
    (map (fn [[k v]] [(name k) (->source-string v)]))
    flatten
-   (clojure.string/join string-join-char)))
+   source-seq->source-string))
 
  clojure.lang.Keyword
  (->source-string [this] (->source-string (name this))))
@@ -95,3 +95,18 @@
     (->source-string vs)))
 
   (is (= 42 (count (->source-string vs))))))
+
+(deftest ??hash-map
+ (let [v {:unit "cluster"
+          :bunch 9
+          :witness {:name "axe"
+                    :index 18}};]));]))
+       expected
+       (source-seq->source-string
+        ["bunch" (->source-string 9)
+         "unit" (->source-string "cluster")
+         "witness"
+         "index" (->source-string 18)
+         "name" (->source-string "axe")])]
+  (is (= expected (->source-string v)))
+  (is (= 54 (count (->source-string v))))))
