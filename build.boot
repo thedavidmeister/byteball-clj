@@ -16,7 +16,8 @@
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]]
  :repositories
- #(conj % '["jitpack" "https://jitpack.io"]))
+ #(conj % '["jitpack" "https://jitpack.io"])
+ :native-path "native")
 
 (require
  '[samestep.boot-refresh :refer [refresh]]
