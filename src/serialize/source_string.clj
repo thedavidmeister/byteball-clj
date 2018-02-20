@@ -51,33 +51,26 @@
 
 ; TESTS
 
+; @see string_utils.test.js
+
 ; mirroring byteballcore fns
-(deftest ??simple-string
- (let [v "simple test string"]
+(deftest ??primitives
+ (doseq [[i prefix c] [; simple string
+                       ["simple test string" "s" 20]
+                       ; integer
+                       [27090 "n" 7]
+                       ; float
+                       [8.103 "n" 7]
+                       ; float int
+                       [1.0 "n" 3]
+                       ; boolean
+                       [false "b" 7]]]
   (is
    (=
-    (source-seq->source-string ["s" v])
-    (->source-string v)))
+    (source-seq->souce-string [prefix i])
+    (->source-string i)))
 
-  (is (= 20 (count (->source-string v))))))
-
-(deftest ??integer
- (let [v 27090]
-  (is
-   (=
-    (source-seq->source-string ["n" v])
-    (->source-string v)))
-
-  (is (= 7 (count (->source-string v))))))
-
-(deftest ??boolean
- (let [v false]
-  (is
-   (=
-    (source-seq->source-string ["b" v])
-    (->source-string v)))
-
-  (is (= 7 (count (->source-string v))))))
+  (is (= c (count (->source-string i))))))
 
 (deftest ??vector
  (let [ts ["s" "n" "s" "s" "n" "b"]
