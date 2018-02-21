@@ -67,7 +67,7 @@
                        [false "b" 7]]]
   (is
    (=
-    (source-seq->souce-string [prefix i])
+    (source-seq->source-string [prefix i])
     (->source-string i)))
 
   (is (= c (count (->source-string i))))))
