@@ -5,7 +5,6 @@
   manifold.stream
   network.data
   cheshire.core
-  pandect.algo.sha256
   serialize.source-string
   secp256k1.core
   secp256k1.formatting.base-convert
@@ -45,8 +44,10 @@
 
 (defn challenge-message->hash
  [message]
- (pandect.algo.sha256/sha256
-  (serialize.source-string/->source-string message)))
+ (secp256k1.formatting.base-convert/byte-array-to-base
+  (secp256k1.hashes/sha256
+   (serialize.source-string/->source-string message))
+  :hex))
 
 (defn challenge-message->signature
  [message private-key]

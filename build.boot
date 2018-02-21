@@ -10,7 +10,6 @@
    [manifold "0.1.6"]
    [cheshire "5.8.0"]
    [samestep/boot-refresh "0.1.0"]
-   [pandect "0.6.1"]
    [byte-transforms "0.1.4"]
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]
