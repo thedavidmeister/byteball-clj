@@ -17,6 +17,7 @@
    [buddy/buddy-core "1.4.0"]
    [org.clojure/core.async "0.4.474"]]
  :repositories
+ ; https://github.com/Sepia-Officinalis/secp256k1
  #(conj % '["jitpack" "https://jitpack.io"]))
 
 (require
