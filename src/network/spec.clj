@@ -2,9 +2,9 @@
  (:require
   [clojure.spec.alpha :as spec]))
 
-(spec/def :message/type #{:justsayin})
+(spec/def :message/type #{:justsaying :request :response})
 
-(spec/def :justsayin/subject #{; request data
-                               "refresh"
-                               ; login to hub
-                               "hub/login"})
+(spec/def :justsaying/subject #{; request data
+                                "refresh"
+                                ; login to hub
+                                "hub/login"})

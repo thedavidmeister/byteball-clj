@@ -4,14 +4,17 @@
   network.spec
   manifold.stream
   network.data
-  cheshire.core
+  network.dispatch
   serialize.source-string
   secp256k1.core
   secp256k1.formatting.base-convert
   [clojure.spec.alpha :as spec]
   clojure.core.async
   crypto.test-data
-  [clojure.test :refer [deftest is]]))
+  [clojure.test :refer [deftest is]]
+
+  ; bootstrap msg handlers
+  network.justsaying))
 
 (def responses (atom []))
 
@@ -19,11 +22,7 @@
  ([] (-conn network.data/hub-url))
  ([url]
   (let [c @(aleph.http/websocket-client url)]
-        ; chan (clojure.core.async/chan)]
-   ; (manifold.stream/consume prn c)
-   ; (manifold.stream/connect c chan)
-   ; (clojure.core.async/go
-   ;  (swap! responses conj (clojure.core.async/<! chan)))
+   (manifold.stream/consume network.dispatch/event-msg-handler c)
    c)))
 (def conn (memoize -conn))
 
@@ -37,10 +36,10 @@
    [(name type) content])))
 
 ; https://github.com/byteball/byteballcore/blob/master/network.js#L100
-(defn just-sayin!
+(defn just-saying!
  [conn subject body]
- {:pre [(spec/valid? :justsayin/subject subject)]}
- (send-message! conn :justsayin {:subject subject :body body}))
+ {:pre [(spec/valid? :justsaying/subject subject)]}
+ (send-message! conn :justsaying {:subject subject :body body}))
 
 (defn challenge-message->hash
  [message]
@@ -78,11 +77,11 @@
 
 (defn login!
  [conn challenge private-key public-key]
- (just-sayin! conn "hub/login" (challenge->login-creds challenge private-key public-key)))
+ (just-saying! conn "hub/login" (challenge->login-creds challenge private-key public-key)))
 
 (defn joints-since!
  [conn mci]
- (just-sayin! conn "refresh" mci))
+ (just-saying! conn "refresh" mci))
 
 ; TESTS
 
