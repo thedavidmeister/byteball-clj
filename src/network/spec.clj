@@ -9,4 +9,11 @@
 (spec/def :justsaying/subject #{"refresh"
                                 "version"
                                 "hub/login"
-                                "hub/challenge"})
+                                "hub/challenge"
+                                "info"
+                                "error"
+                                "hub/push_project_number"
+                                "hub/message_box_status"
+                                "exchange_rates"})
+
+(spec/def :request/command #{"subscribe"})

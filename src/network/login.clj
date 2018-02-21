@@ -3,6 +3,7 @@
   serialize.source-string
   secp256k1.core
   secp256k1.formatting.base-convert
+  crypto.keys
   [clojure.spec.alpha :as spec]
   [clojure.test :refer [deftest is]]))
 

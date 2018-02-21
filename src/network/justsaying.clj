@@ -34,3 +34,9 @@
   (network.login/login!
    (:network/conn msg)
    body)))
+
+(defmethod -justsaying-msg-handler "hub/push_project_number" [msg])
+(defmethod -justsaying-msg-handler "hub/message_box_status" [msg])
+(defmethod -justsaying-msg-handler "exchange_rates" [msg])
+(defmethod -justsaying-msg-handler "info" [msg])
+(defmethod -justsaying-msg-handler "error" [msg])
