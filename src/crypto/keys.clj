@@ -26,12 +26,11 @@
 
 (deftest ??private-key
  ; smoke test, not exactly equivalent to `ecdsa.privateKeyVerify()` in core
- (is (bytes? (secp256k1.core/private-key crypto.test-data/private-key))))
+ (is (instance? java.math.BigInteger (secp256k1.core/private-key crypto.test-data/private-key))))
 
 (deftest ??public-key
- ; (is (secp256k1.core/valid-point? (secp256k1.core/public-key crypto.test-data/public-key)))
  ; parsing our test public key is equivalent to generating one from the test private key
  (is
   (=
-   (secp256k1.core/public-key crypto.test-data/public-key)
+   (secp256k1.core/public-key crypto.test-data/public-key :base64)
    (secp256k1.core/public-key (secp256k1.core/private-key crypto.test-data/private-key)))))

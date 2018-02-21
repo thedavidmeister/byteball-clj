@@ -17,6 +17,9 @@
  java.lang.Long
  (->source-string [this] (source-seq->source-string ["n" this]))
 
+ java.lang.Integer
+ (->source-string [this] (source-seq->source-string ["n" this]))
+
  java.lang.Double
  (->source-string [this]
   ; emulate JS float handling - 1.0 => "1"
@@ -55,19 +58,19 @@
 
 ; mirroring byteballcore fns
 (deftest ??primitives
- (doseq [[i prefix c] [; simple string
-                       ["simple test string" "s" 20]
-                       ; integer
-                       [27090 "n" 7]
-                       ; float
-                       [8.103 "n" 7]
-                       ; float int
-                       [1.0 "n" 3]
-                       ; boolean
-                       [false "b" 7]]]
+ (doseq [[i o prefix c] [; simple string
+                         ["simple test string" "simple test string" "s" 20]
+                         ; integer
+                         [27090 27090 "n" 7]
+                         ; float
+                         [8.103 8.103 "n" 7]
+                         ; float int
+                         [1.0 1 "n" 3]
+                         ; boolean
+                         [false "false" "b" 7]]]
   (is
    (=
-    (source-seq->source-string [prefix i])
+    (source-seq->source-string [prefix o])
     (->source-string i)))
 
   (is (= c (count (->source-string i))))))
