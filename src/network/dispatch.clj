@@ -15,7 +15,9 @@
   (let [parsed (cheshire.core/parse-string ev-msg)
         [t msg] (camel-snake-kebab.extras/transform-keys camel-snake-kebab.core/->kebab-case-keyword parsed)
         t' (keyword t)
-        msg' (merge {:message/type t'} msg)]
-   (prn "**" conn)
+        msg' (merge
+              {:message/type t'
+               :network/conn conn}
+              msg)]
    (spec/assert :message/type t')
    (-event-msg-handler msg')))

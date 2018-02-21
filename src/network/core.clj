@@ -14,21 +14,6 @@
   ; bootstrap msg handlers
   network.justsaying))
 
-; https://github.com/byteball/byteballcore/blob/master/network.js#L92
-(defn send-message!
- [conn type content]
- {:pre [(spec/valid? :message/type type)]}
- (manifold.stream/put!
-  conn
-  (cheshire.core/generate-string
-   [(name type) content])))
-
-; https://github.com/byteball/byteballcore/blob/master/network.js#L100
-(defn just-saying!
- [conn subject body]
- {:pre [(spec/valid? :justsaying/subject subject)]}
- (send-message! conn :justsaying {:subject subject :body body}))
-
 (defn challenge-message->hash
  [message]
  (secp256k1.formatting.base-convert/byte-array-to-base
