@@ -3,6 +3,7 @@
   network.spec
   network.data
   network.dispatch
+  network.send
   serialize.source-string
   secp256k1.core
   secp256k1.formatting.base-convert
@@ -50,11 +51,11 @@
 
 (defn login!
  [conn challenge private-key public-key]
- (just-saying! conn "hub/login" (challenge->login-creds challenge private-key public-key)))
+ (network.send/just-saying! conn "hub/login" (challenge->login-creds challenge private-key public-key)))
 
 (defn joints-since!
  [conn mci]
- (just-saying! conn "refresh" mci))
+ (network.send/just-saying! conn "refresh" mci))
 
 ; TESTS
 

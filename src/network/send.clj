@@ -17,7 +17,7 @@
 (defn just-saying!
  [conn subject body]
  {:pre [(spec/valid? :justsaying/subject subject)]}
- (send-message! conn :justsaying {:subject subject :body body}))
+ (message! conn :justsaying {:subject subject :body body}))
 
 (defn error!
  [conn error]
