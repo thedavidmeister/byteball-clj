@@ -10,10 +10,8 @@
    [manifold "0.1.6"]
    [cheshire "5.8.0"]
    [samestep/boot-refresh "0.1.0"]
-   [byte-transforms "0.1.4"]
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]
-   [buddy/buddy-core "1.4.0"]
    [org.clojure/core.async "0.4.474"]]
  :repositories
  ; https://github.com/Sepia-Officinalis/secp256k1
