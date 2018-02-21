@@ -11,6 +11,7 @@
   secp256k1.formatting.base-convert
   [clojure.spec.alpha :as spec]
   clojure.core.async
+  crypto.test-data
   [clojure.test :refer [deftest is]])
  (:import org.bitcoin.NativeSecp256k1))
 
@@ -27,17 +28,6 @@
    ;  (swap! responses conj (clojure.core.async/<! chan)))
    c)))
 (def conn (memoize -conn))
-
-(defn -ks
- []
- (let [raw (secp256k1.core/generate-address-pair)]
-  {:public-key (secp256k1.core/x962-encode (:public-key raw) :output-format :base64)
-   ; hex string is easier to cross-reference against byteballcore as it can be
-   ; used directly in Buffer() in byteballcore but there is no biginteger in JS
-   :private-key (.toString
-                 (biginteger (:private-key raw))
-                 16)}))
-(def ks (memoize -ks))
 
 ; https://github.com/byteball/byteballcore/blob/master/network.js#L92
 (defn send-message!
@@ -80,10 +70,14 @@
        signed-hex (str (:R signed) (:S signed))]
   (secp256k1.formatting.base-convert/base-to-base signed-hex :hex :base64)))
 
+(defn unsigned-response-message
+ [challenge public-key]
+ {:challenge challenge
+  :pubkey public-key})
+
 (defn challenge->login-creds
  [challenge private-key public-key]
- (let [message {:challenge challenge
-                :pubkey public-key}
+ (let [message (unsigned-response-message challenge public-key)
        signature (challenge-message->signature message private-key)]
   (merge
    message
@@ -99,10 +93,7 @@
 
 ; TESTS
 
-(def ??challenge "bUSwwUmABqPGAyRteUPKdaaq/wDM5Rqr+UL3sO/a")
-(def ??priv "18d8bc95d3b4ae8e7dd5aaa77158f72d7ec4e8556a11e69b20a87ee7d6ac70b4")
-(def ??pub "AqUMbbXfZg6uw506M9lbiJU/f74X5BhKdovkMPkspfNo")
-(def ??message {:challenge ??challenge :pubkey ??pub})
+(def ??message (unsigned-response-message crypto.test-data/hub-challenge crypto.test-data/public-key))
 (def ??sig "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA==")
 
 (deftest ??challenge-message->hash
@@ -117,12 +108,12 @@
    "cAT/c5zn4nb+5UnT5B++9ePvYdEE24qmPFTXbxYd2IE+4gQQNiHogRbyQRlXOLNto09JmRK0jHOyGeIttELkNA=="
    (challenge-message->signature
     ??message
-    ??priv))))
+    crypto.test-data/private-key))))
 
 (deftest ??challenge->login-creds
  (is
   (=
-   (challenge->login-creds ??challenge ??priv ??pub)
+   (challenge->login-creds crypto.test-data/hub-challenge crypto.test-data/private-key crypto.test-data/public-key)
    (merge
     ??message
     {:signature ??sig}))))
