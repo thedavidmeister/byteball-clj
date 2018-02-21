@@ -12,7 +12,9 @@
    [samestep/boot-refresh "0.1.0"]
    [adzerk/boot-test "RELEASE" :scope "test"]
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]
-   [org.clojure/core.async "0.4.474"]]
+   [org.clojure/core.async "0.4.474"]
+   [camel-snake-kebab "0.4.0"]
+   [com.taoensso/timbre "4.10.0"]]
  :repositories
  ; https://github.com/Sepia-Officinalis/secp256k1
  #(conj % '["jitpack" "https://jitpack.io"]))
