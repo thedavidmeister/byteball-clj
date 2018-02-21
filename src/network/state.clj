@@ -3,7 +3,8 @@
   aleph.http
   manifold.stream
   network.data
-  network.dispatch))
+  network.dispatch
+  network.core))
 
 (defn -conn
  ([] (-conn network.data/hub-url))

@@ -2,7 +2,8 @@
  (:require
   network.send
   taoensso.timbre
-  manifold.stream))
+  manifold.stream
+  version.data))
 
 (defn incompatible!
  [conn s mine yours]

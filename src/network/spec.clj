@@ -6,8 +6,7 @@
 
 (spec/def :message/type #{:justsaying :request :response})
 
-(spec/def :justsaying/subject #{; request data
-                                "refresh"
+(spec/def :justsaying/subject #{"refresh"
                                 "version"
-                                ; login to hub
-                                "hub/login"})
+                                "hub/login"
+                                "hub/challenge"})
