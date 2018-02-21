@@ -10,4 +10,5 @@
  (spec/assert :justsaying/subject msg)
  (-justsaying-msg-handler msg))
 
-; (defmethod -justsaying-msg-handler)
+(defmethod -justsaying-msg-handler "version" [msg]
+ (prn msg))

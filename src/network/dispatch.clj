@@ -11,11 +11,11 @@
 
 (defn event-msg-handler
   "Wraps `-event-msg-handler` with logging, error catching, etc."
-  [ev-msg]
+  [conn ev-msg]
   (let [parsed (cheshire.core/parse-string ev-msg)
         [t msg] (camel-snake-kebab.extras/transform-keys camel-snake-kebab.core/->kebab-case-keyword parsed)
         t' (keyword t)
         msg' (merge {:message/type t'} msg)]
+   (prn "**" conn)
    (spec/assert :message/type t')
-   (prn "*" msg')
    (-event-msg-handler msg')))

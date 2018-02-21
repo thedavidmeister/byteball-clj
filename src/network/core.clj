@@ -1,8 +1,6 @@
 (ns network.core
  (:require
-  aleph.http
   network.spec
-  manifold.stream
   network.data
   network.dispatch
   serialize.source-string
@@ -15,16 +13,6 @@
 
   ; bootstrap msg handlers
   network.justsaying))
-
-(def responses (atom []))
-
-(defn -conn
- ([] (-conn network.data/hub-url))
- ([url]
-  (let [c @(aleph.http/websocket-client url)]
-   (manifold.stream/consume network.dispatch/event-msg-handler c)
-   c)))
-(def conn (memoize -conn))
 
 ; https://github.com/byteball/byteballcore/blob/master/network.js#L92
 (defn send-message!
