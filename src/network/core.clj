@@ -12,8 +12,7 @@
   [clojure.spec.alpha :as spec]
   clojure.core.async
   crypto.test-data
-  [clojure.test :refer [deftest is]])
- (:import org.bitcoin.NativeSecp256k1))
+  [clojure.test :refer [deftest is]]))
 
 (def responses (atom []))
 
@@ -48,13 +47,6 @@
  [message]
  (pandect.algo.sha256/sha256
   (serialize.source-string/->source-string message)))
-
-(defn valid-signature?
- [hash sig public-key]
- (. org.bitcoin.NativeSecp256k1 verify
-  hash
-  sig
-  public-key))
 
 (defn challenge-message->signature
  [message private-key]
