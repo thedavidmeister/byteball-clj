@@ -19,6 +19,17 @@
  {:pre [(spec/valid? :justsaying/subject subject)]}
  (message! conn :justsaying {:subject subject :body body}))
 
+(defn request!
+ ([conn command] (request! conn command nil))
+ ([conn command params]
+  (message!
+   conn
+   :request
+   (merge
+    {:command command
+     :tag (gensym)}
+    (when params {:params params})))))
+
 (defn error!
  [conn error]
  (just-saying! conn "error" error))

@@ -6,7 +6,7 @@
 (defmulti -request-msg-handler "Multimethod to handle `request`s" :command)
 
 (defmethod network.dispatch/-event-msg-handler :request [msg]
- (spec/assert :request/command (:command msg))
+ (spec/assert :request/request msg)
  (taoensso.timbre/debug (dissoc msg :network/conn))
  (-request-msg-handler msg))
 
