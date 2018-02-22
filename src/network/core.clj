@@ -6,7 +6,8 @@
   network.send
 
   ; bootstrap msg handlers
-  network.justsaying))
+  network.justsaying
+  network.request))
 
 (defn joints-since!
  [conn mci]

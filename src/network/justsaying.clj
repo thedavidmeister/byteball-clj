@@ -7,6 +7,7 @@
   manifold.stream
   network.send
   network.login
+  unit.spec
   [clojure.spec.alpha :as spec]))
 
 (defmulti -justsaying-msg-handler "Multimethod to handle `justsaying-msg`s" :subject)
@@ -27,13 +28,17 @@
     (version.api/incompatible! conn "alts" version.data/alt (:alt body))
 
     :default
-    (alter-meta! conn merge body)))))
+    (version.api/version-onto-conn! conn body)))))
 
 (defmethod -justsaying-msg-handler "hub/challenge" [msg]
  (when-let [body (:body msg)]
   (network.login/login!
    (:network/conn msg)
    body)))
+
+(defmethod -justsaying-msg-handler "joint" [msg]
+ (when-let [unit-data (-> msg :body :unit)]
+  (spec/assert :unit/unit-data unit-data)))
 
 (defmethod -justsaying-msg-handler "hub/push_project_number" [msg])
 (defmethod -justsaying-msg-handler "hub/message_box_status" [msg])

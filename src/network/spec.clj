@@ -8,6 +8,7 @@
 
 (spec/def :justsaying/subject #{"refresh"
                                 "version"
+                                "joint"
                                 "hub/login"
                                 "hub/challenge"
                                 "info"
