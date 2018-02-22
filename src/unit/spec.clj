@@ -27,7 +27,9 @@
    "data"
    "profile"})
 (spec/def :unit.message/payload-hash :unit/hash)
-(spec/def :unit.message/payload-location #{"inline"})
+(spec/def :unit.message/payload-location
+ #{"inline"
+   "none"})
 (spec/def :unit.message.payload/payload
  (spec/keys
   :opt-un [:unit.message.payload/inputs
@@ -83,10 +85,10 @@
            :unit/parent-units
            :unit/last-ball
            :unit.message/messages
-           :unit/main-chain-index
            :unit/headers-commission
            :unit/witness-list-unit
            :unit/version
            :unit/timestamp
            :unit/authors
-           :unit/last-ball-unit]))
+           :unit/last-ball-unit]
+  :opt-un [:unit/main-chain-index]))
