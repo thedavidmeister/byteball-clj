@@ -9,7 +9,7 @@ This implementation should be different enough to `byteballcore` (https://github
 - Could validation be handled in parallel?
 - Could core functionality (crypto, networking, validation, etc.) be split cleanly from higher level wallet features (UI, chatbots, etc.)?
 - Could different storage backends/models be provided and beneficial?
-- Could the protocol be implemented well in a different programming paradigm (e.g. lisp)
+- Could the protocol be implemented well in a different programming paradigm (e.g. lisp)?
 
 Additionally, there are essentially no tests in `byteballcore` which presents a huge risk to the network. While building out this alternative implementation, new tests will be written against both repos simultaneously to help ensure compatibility and reliability.
 
