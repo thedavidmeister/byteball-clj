@@ -33,3 +33,8 @@
 (defn error!
  [conn error]
  (just-saying! conn "error" error))
+
+(defn response!
+ ([conn tag] (response! conn tag nil))
+ ([conn tag response]
+  (message! conn :response {:tag tag :response response})))
