@@ -15,4 +15,7 @@
  ; https://github.com/thedavidmeister/byteball-clj/issues/24
 
 (defmethod -request-msg-handler "heartbeat" [msg]
- ())
+ (network.send/response!
+  (:network/conn msg)
+  (:tag msg)))
+  
