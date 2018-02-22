@@ -20,8 +20,8 @@ Working on logging in to a hub.
 - [x] port serialisation logic for data
 - [x] websockets connect to a hub and push data
 - [x] crypto for signing a challenge message
-- [ ] tests and cleanup
-- [ ] send challenge message back to hub and receive login confirmation
+- [x] send challenge message back to hub and receive login confirmation
+- [ ] downloading units from hub
 
 ## Development
 
