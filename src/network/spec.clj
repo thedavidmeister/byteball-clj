@@ -19,7 +19,7 @@
                                 "hub/message_box_status"
                                 "exchange_rates"})
 
-(spec/def :request/command #{"subscribe"})
+(spec/def :request/command #{"subscribe" "heartbeat"})
 (spec/def :request/tag string?)
 (spec/def :request/params map?)
 (spec/def :request/request
