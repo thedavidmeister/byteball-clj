@@ -34,6 +34,8 @@ Currently all fns are only accessible through a REPL. Two boot tasks are provide
 
 You will need to run the server first and then connect to it with the client.
 
+If you don't need hot-reloading of the REPL and just want to experiment as simply as possible, `boot repl` is fine too.
+
 # Testing
 
 Standard clojure testing with boot:
