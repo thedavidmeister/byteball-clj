@@ -45,3 +45,4 @@
 (defmethod -justsaying-msg-handler "exchange_rates" [msg])
 (defmethod -justsaying-msg-handler "info" [msg])
 (defmethod -justsaying-msg-handler "error" [msg])
+(defmethod -justsaying-msg-handler "free_joints_end" [msg])

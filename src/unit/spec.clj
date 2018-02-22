@@ -21,12 +21,16 @@
   :unit.message.payload/output
   :kind vector?))
 
-(spec/def :unit.message/app #{"payment"})
+(spec/def :unit.message/app
+ #{"payment"
+   "data_feed"
+   "data"
+   "profile"})
 (spec/def :unit.message/payload-hash :unit/hash)
 (spec/def :unit.message/payload-location #{"inline"})
 (spec/def :unit.message.payload/payload
  (spec/keys
-  :req-un [:unit.message.payload/inputs
+  :opt-un [:unit.message.payload/inputs
            :unit.message.payloads/outputs]))
 
 (spec/def :unit.message/message

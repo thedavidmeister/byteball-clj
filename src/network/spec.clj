@@ -9,6 +9,7 @@
 (spec/def :justsaying/subject #{"refresh"
                                 "version"
                                 "joint"
+                                "free_joints_end"
                                 "hub/login"
                                 "hub/challenge"
                                 "info"
