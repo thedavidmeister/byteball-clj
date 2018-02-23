@@ -7,7 +7,9 @@
   manifold.stream
   network.send
   network.login
+  unit.process
   unit.spec
+  clojure.core.async
   [clojure.spec.alpha :as spec]))
 
 (defmulti -justsaying-msg-handler "Multimethod to handle `justsaying-msg`s" :subject)
@@ -38,7 +40,7 @@
 
 (defmethod -justsaying-msg-handler "joint" [msg]
  (when-let [unit-data (-> msg :body :unit)]
-  (spec/assert :unit/unit-data unit-data)))
+  (clojure.core.async/>!! (unit.process/unit-chan) unit-data)))
 
 (defmethod -justsaying-msg-handler "hub/push_project_number" [msg])
 (defmethod -justsaying-msg-handler "hub/message_box_status" [msg])
