@@ -14,6 +14,7 @@
    [com.github.Sepia-Officinalis/secp256k1 "fd44e1e0d6"]
    [org.clojure/core.async "0.4.474"]
    [camel-snake-kebab "0.4.0"]
+   [datascript "0.16.3"]
    [com.taoensso/timbre "4.10.0"]]
  :repositories
  ; https://github.com/Sepia-Officinalis/secp256k1

@@ -92,3 +92,8 @@
            :unit/authors
            :unit/last-ball-unit]
   :opt-un [:unit/main-chain-index]))
+
+(spec/def :unit/units
+ (spec/coll-of
+  :unit/unit-data
+  :kind vector?))
