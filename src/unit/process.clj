@@ -39,7 +39,7 @@
  []
  (let [i (clojure.core.async/chan 1000)
        o (clojure.core.async/chan 1000)]
-  (batch i o 100 100)
+  (batch i o 1000 100)
   (clojure.core.async/go-loop []
    (let [us (clojure.core.async/<! o)]
     (storage.datascript.api/persist-units! us)

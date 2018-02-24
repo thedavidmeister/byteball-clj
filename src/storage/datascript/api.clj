@@ -15,6 +15,7 @@
  ([conn units]
   {:pre [(d/conn? conn)
          (spec/valid? :unit/units units)]}
-  (d/transact!
-   conn
-   units)))
+  (when (seq units)
+   (d/transact!
+    conn
+    units))))
