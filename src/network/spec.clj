@@ -11,10 +11,13 @@
                                 "version"
                                 "joint"
                                 "free_joints_end"
+                                ; respond to a challenge
                                 "hub/login"
+                                ; hub is asking us to login
                                 "hub/challenge"
                                 "info"
                                 "error"
+                                ; hub is telling us that we are logged in
                                 "hub/push_project_number"
                                 "hub/message_box_status"
                                 "exchange_rates"})

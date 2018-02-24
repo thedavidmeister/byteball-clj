@@ -7,6 +7,7 @@
   manifold.stream
   network.send
   network.login
+  network.subscribe
   unit.process
   unit.spec
   clojure.core.async
@@ -42,7 +43,10 @@
  (when-let [unit-data (-> msg :body :unit)]
   (clojure.core.async/>!! (unit.process/unit-chan) unit-data)))
 
-(defmethod -justsaying-msg-handler "hub/push_project_number" [msg])
+(defmethod -justsaying-msg-handler "hub/push_project_number" [msg]
+ (network.subscribe/subscribe!
+  (:network/conn msg)))
+
 (defmethod -justsaying-msg-handler "hub/message_box_status" [msg])
 (defmethod -justsaying-msg-handler "exchange_rates" [msg])
 (defmethod -justsaying-msg-handler "info" [msg])

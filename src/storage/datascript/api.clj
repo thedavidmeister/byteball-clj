@@ -8,14 +8,13 @@
 (defn -conn
  []
  (d/create-conn storage.datascript.data/schema))
-(def conn (memoize conn))
+(def conn (memoize -conn))
 
 (defn persist-units!
  ([units] (persist-units! (conn) units))
  ([conn units]
   {:pre [(d/conn? conn)
          (spec/valid? :unit/units units)]}
-  (prn "*" units)
   (d/transact!
    conn
    units)))

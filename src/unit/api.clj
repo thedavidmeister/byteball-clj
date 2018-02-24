@@ -26,11 +26,3 @@
                "UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ"]
    :last_stable_mci 1935241
    :last_known_mci 1935251}))
-
-(defn subscribe!
- [conn]
- (network.send/request!
-  conn
-  "subscribe"
-  {:subscription_id (gensym)
-   :last_mci 0}))
